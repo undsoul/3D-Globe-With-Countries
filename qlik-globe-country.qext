@@ -1,0 +1,12 @@
+{
+    "name": "Globe Viz w/Country",
+    "description": "Interactive 3D globe visualization with Country",
+    "type": "visualization",
+    "version": "1.8.0",
+    "author": "MuchachoAI",
+    "icon": "map",
+    "preview": "",
+    "dependencies": {
+        "qlik-sense": ">=3.0.x"
+    }
+}
