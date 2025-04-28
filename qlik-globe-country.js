@@ -296,58 +296,147 @@ define(['qlik', 'jquery', 'text!./globeCoordinates.json', './d3.v7'], function(q
         let validRows = 0;
         let invalidRows = 0;
         
+        // Determine the format of the data
+        const firstRow = layout.qHyperCube.qDataPages[0].qMatrix[0];
+        const dataFormat = firstRow ? detectDataFormat(firstRow) : 'unknown';
+        console.log('Detected data format:', dataFormat);
+        
         layout.qHyperCube.qDataPages[0].qMatrix.forEach((row, index) => {
-            // Handle the case where row is an array with a single element (just the dimension)
-            // This appears to be the case in the current data structure
-            if (row && row.length === 1 && row[0]) {
-                // Since we don't have measure data in the row, let's try to find it in 
-                // the qMeasureInfo object which may contain the data we need
-                const countryName = row[0].qText.toUpperCase();
-                
-                // In this case, let's use a placeholder measure value, or try to find it elsewhere
-                // For demonstration, we'll just use a random number
-                const measureValue = Math.random() * 100; // Placeholder value
-                measureValues.set(countryName, measureValue);
-                validRows++;
-                
-                if (validRows <= 3) {
-                    console.log(`Adapted row ${index}: Country=${countryName}, Value=${measureValue} (placeholder value)`);
+            try {
+                if (!row || row.length === 0) {
+                    invalidRows++;
+                    return;
                 }
-            }
-            // Try the original logic as well
-            else if (row && row.length > 1 && row[0] && row[1] && 
-                   typeof row[1].qNum === 'number' && !isNaN(row[1].qNum)) {
-                const countryName = row[0].qText.toUpperCase();
-                const measureValue = row[1].qNum;
-                measureValues.set(countryName, measureValue);
-                validRows++;
                 
-                if (validRows <= 3) {
-                    console.log(`Valid row ${index}: Country=${countryName}, Value=${measureValue}`);
-                }
-            } else {
-                invalidRows++;
-                if (invalidRows <= 3) {
-                    console.log(`Invalid data row at index ${index}:`, row);
-                    
-                    // Detailed error diagnosis
-                    if (!row || row.length === 0) console.log('  - Empty row');
-                    else if (row.length < 2) console.log('  - Row has only one element (missing measure)');
-                    else {
-                        if (!row[0]) console.log('  - Missing dimension value');
-                        if (!row[1]) console.log('  - Missing measure value');
-                        if (row[1] && (typeof row[1].qNum !== 'number' || isNaN(row[1].qNum))) {
-                            console.log(`  - Invalid measure value: ${row[1]?.qNum}, type: ${typeof row[1]?.qNum}`);
+                let countryName = '';
+                let measureValue = null;
+                
+                // Handle different data formats
+                switch (dataFormat) {
+                    case 'dimension-only':
+                        // When we only have dimension data, try to find measure in a different location
+                        countryName = row[0].qText.toUpperCase();
+                        
+                        // Look for the measure value in qMeasureInfo or qGrandTotalRow
+                        if (layout.qHyperCube.qGrandTotalRow && 
+                            layout.qHyperCube.qGrandTotalRow.length > 0 &&
+                            typeof layout.qHyperCube.qGrandTotalRow[0].qNum === 'number') {
+                            // This isn't per country, but we don't have country-specific data
+                            // so we use the grand total or would need additional logic to get the right measure
+                            measureValue = null; // No valid per-country measure available
+                        } else {
+                            // No valid measure data available
+                            measureValue = null;
                         }
+                        break;
+                        
+                    case 'dimension-measure':
+                        // Standard case with dimension and measure
+                        countryName = row[0].qText.toUpperCase();
+                        measureValue = row[1].qNum;
+                        break;
+                        
+                    case 'dimension-measure-alternative':
+                        // Alternative format where measure might be in a different position
+                        countryName = row[0].qText.toUpperCase();
+                        
+                        // Find the measure column (might not be at index 1)
+                        const measureCol = row.findIndex((cell, idx) => 
+                            idx > 0 && cell && typeof cell.qNum === 'number');
+                        
+                        if (measureCol > 0) {
+                            measureValue = row[measureCol].qNum;
+                        }
+                        break;
+                        
+                    case 'complex':
+                        // More complex data structure
+                        // Try to find dimension and measure by examining cell properties
+                        const dimCell = row.find(cell => cell && cell.qText && !isNaN(cell.qElemNumber));
+                        const measureCell = row.find(cell => cell && typeof cell.qNum === 'number' && !isNaN(cell.qNum));
+                        
+                        if (dimCell && measureCell) {
+                            countryName = dimCell.qText.toUpperCase();
+                            measureValue = measureCell.qNum;
+                        }
+                        break;
+                        
+                    default:
+                        // Unknown format, try basic extraction
+                        if (row[0] && row[0].qText) {
+                            countryName = row[0].qText.toUpperCase();
+                            
+                            // Try to find a valid measure value in any cell
+                            for (let i = 1; i < row.length; i++) {
+                                if (row[i] && typeof row[i].qNum === 'number' && !isNaN(row[i].qNum)) {
+                                    measureValue = row[i].qNum;
+                                    break;
+                                }
+                            }
+                        }
+                }
+                
+                // Only add to map if we have both country and valid measure
+                if (countryName && measureValue !== null && !isNaN(measureValue)) {
+                    measureValues.set(countryName, measureValue);
+                    validRows++;
+                    
+                    if (validRows <= 3) {
+                        console.log(`Valid row ${index}: Country=${countryName}, Value=${measureValue}`);
+                    }
+                } else if (countryName) {
+                    // We have a country but no valid measure - don't add random values
+                    invalidRows++;
+                    if (invalidRows <= 3) {
+                        console.log(`Row ${index} has country ${countryName} but no valid measure value`);
+                    }
+                } else {
+                    invalidRows++;
+                    if (invalidRows <= 3) {
+                        console.log(`Invalid data row at index ${index}:`, row);
                     }
                 }
+            } catch (error) {
+                console.error(`Error processing row ${index}:`, error);
+                invalidRows++;
             }
         });
         
         console.log(`Loaded ${measureValues.size} country measure values (${validRows} valid rows, ${invalidRows} invalid rows)`);
-        console.log('NOTE: Using placeholder values since actual measure data seems to be missing from the data structure');
         console.log('=== END MEASURE VALUE COLLECTION ===');
         return measureValues;
+    }
+
+    // Helper function to detect the data format from the first row
+    function detectDataFormat(row) {
+        if (!row) return 'unknown';
+        
+        if (row.length === 1 && row[0] && row[0].qText) {
+            return 'dimension-only';
+        }
+        
+        if (row.length >= 2 && row[0] && row[0].qText && 
+            row[1] && typeof row[1].qNum === 'number' && !isNaN(row[1].qNum)) {
+            return 'dimension-measure';
+        }
+        
+        if (row.length >= 2 && row[0] && row[0].qText) {
+            // Check if any cell after the first contains measure data
+            const hasMeasure = row.some((cell, idx) => 
+                idx > 0 && cell && typeof cell.qNum === 'number' && !isNaN(cell.qNum));
+            
+            if (hasMeasure) {
+                return 'dimension-measure-alternative';
+            }
+        }
+        
+        // More complex structure
+        if (row.some(cell => cell && cell.qText) && 
+            row.some(cell => cell && typeof cell.qNum === 'number' && !isNaN(cell.qNum))) {
+            return 'complex';
+        }
+        
+        return 'unknown';
     }
 
     function updateCountryVisuals(countries, props, layout) {
@@ -519,10 +608,13 @@ define(['qlik', 'jquery', 'text!./globeCoordinates.json', './d3.v7'], function(q
                 // Add measure value if available
                 if (props.colorByMeasure && props.measureValues && props.measureValues.has(countryName)) {
                     const value = props.measureValues.get(countryName);
-                    const formattedValue = (typeof value === "number") 
-                        ? value.toLocaleString(undefined, {maximumFractionDigits: 2})
-                        : value;
-                    tooltipText = `${d.properties.name}: ${formattedValue}`;
+                    // Only format and display if we have a valid value
+                    if (value !== null && value !== undefined && !isNaN(value)) {
+                        const formattedValue = (typeof value === "number") 
+                            ? value.toLocaleString(undefined, {maximumFractionDigits: 2})
+                            : value;
+                        tooltipText = `${d.properties.name}: ${formattedValue}`;
+                    }
                 }
                 
                 // Get position for tooltip (in page coordinates)
