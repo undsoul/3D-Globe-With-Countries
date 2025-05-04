@@ -2,11 +2,11 @@
 
 An interactive 3D globe visualization extension for Qlik Sense that allows users to explore country data in a more engaging and intuitive way.
 
-![Qlik Globe Country Visualization](https://github.com/yourusername/qlik-globe-country/raw/main/screenshots/globe-preview.png)
+https://github.com/user-attachments/assets/13eaabbe-922d-4516-979b-7a7727fdf9b5
 
 ## Features
 
-- **Interactive 3D Globe**: Navigate countries on a rotatable, zoomable 3D globe
+- **Interactive 3D Globe**: Navigate countries on/off a rotatable, zoomable 3D globe
 - **Data-Driven Coloring**: Color countries based on measure values with customizable color scales
 - **Selection Integration**: Seamlessly integrates with Qlik's selection model
 - **Rich Tooltips**: Customizable tooltips show country names and measure values
@@ -26,7 +26,7 @@ An interactive 3D globe visualization extension for Qlik Sense that allows users
 
 ### From Qlik Sense Desktop
 
-1. Download the latest release ZIP file from the [releases page](https://github.com/yourusername/qlik-globe-country/releases)
+1. Download the latest release ZIP file 
 2. Extract the ZIP to your Qlik Sense Desktop extensions directory:
    - Windows: `C:\Users\[USERNAME]\Documents\Qlik\Sense\Extensions\`
 3. Restart Qlik Sense Desktop
