@@ -1,6 +1,6 @@
 # Qlik Globe - Interactive Country Map Extension
 
-https://github.com/user-attachments/assets/1e6fc290-5a00-4864-977b-e0e57767292c
+https://github.com/user-attachments/assets/c2ecf060-097e-40f4-b691-3658bed707c0
 
 ## Overview
 
