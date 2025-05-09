@@ -1,148 +1,187 @@
-# Qlik Globe Country Extension
+# Qlik Globe - Interactive Country Map Extension
 
-An interactive 3D globe visualization extension for Qlik Sense that allows users to explore country data in a more engaging and intuitive way.
+![Qlik Globe Extension](https://via.placeholder.com/800x400?text=Qlik+Globe+Extension)
 
-https://github.com/user-attachments/assets/3d18f659-0b46-4eef-a905-bc8335e9ae9b
+## Overview
 
+Qlik Globe is an interactive 3D globe visualization extension for Qlik Sense that allows users to visualize country-based data on a rotatable, zoomable globe. This extension is perfect for global analytics, international comparisons, and geospatial data visualization.
 
 ## Features
 
-- **Interactive 3D Globe**: Navigate countries on a rotatable, zoomable 3D globe
-- **Data-Driven Coloring**: Color countries based on measure values with customizable color scales
-- **Selection Integration**: Seamlessly integrates with Qlik's selection model
-- **Rich Tooltips**: Customizable tooltips show country names and measure values
-- **Responsive Design**: Adapts to different screen sizes and orientations
-- **Smooth Animations**: Engaging initial animation and smooth rotation
-- **Accessibility Features**: Keyboard controls and ARIA attributes for better accessibility
-- **Touch Support**: Full touch gesture support for mobile and tablet devices
+- **Interactive 3D Globe**: Rotate, zoom, and interact with a beautiful 3D globe visualization
+- **Responsive Design**: Adapts to different screen sizes and device types
+- **Country Selection**: Click countries to make selections in your Qlik app
+- **Data-Driven Coloring**: Color countries based on measure values with customizable color gradient
+- **Smooth Animations**: Elegant initial animation and smooth rotation
+- **Rich Tooltips**: Informative tooltips showing country names and measure values
+- **Advanced Customization**: Extensive property panel with options for colors, behavior, and interactions
+- **Touch Support**: Full support for touch gestures including pinch-to-zoom
+- **Accessibility Features**: Keyboard navigation and ARIA attributes for better accessibility
+
+## Screenshots
+
+![Screenshot 1](https://via.placeholder.com/400x200?text=Screenshot+1)
+![Screenshot 2](https://via.placeholder.com/400x200?text=Screenshot+2)
 
 ## Installation
 
-### From Qlik Sense Enterprise
+### Qlik Sense Desktop / On-Premises
 
-1. Download the latest release ZIP file 
-2. In the Qlik Management Console (QMC), navigate to **Extensions**
-3. Click **Import** and select the downloaded ZIP file
-4. Click **Import** to complete the installation
+1. Download the latest release ZIP file from the [releases page](https://github.com/yourusername/qlik-globe/releases)
+2. Extract the ZIP file
+3. Copy the extracted folder to your Qlik Sense extensions directory:
+   - Qlik Sense Desktop: `C:\Users\[USERNAME]\Documents\Qlik\Sense\Extensions\`
+   - Qlik Sense Server: Import through the QMC (Qlik Management Console)
 
-### From Qlik Cloud
+### Qlik Sense Cloud
 
-1. Download the latest release ZIP file 
-2. Log in to your Qlik Cloud tenant
-3. Navigate to the **Admin Console**
-4. Select **Extensions** from the menu
-5. Click **Add** button in the top right corner
-6. Select the downloaded ZIP file
-7. Click **Add** to complete the installation
-8. The extension will now be available in the Qlik Sense Hub
-
-### From Qlik Sense Desktop
-
-1. Download the latest release ZIP file 
-2. Extract the ZIP to your Qlik Sense Desktop extensions directory:
-   - Windows: `C:\Users\[USERNAME]\Documents\Qlik\Sense\Extensions\`
-3. Restart Qlik Sense Desktop
+1. Download the latest release ZIP file from the [releases page](https://github.com/yourusername/qlik-globe/releases)
+2. Log in to your Qlik Sense Cloud tenant
+3. Navigate to the hub and open the app where you want to use the extension
+4. Click on "Add new" in the left panel
+5. Select "Extension" and then "Upload extension"
+6. Choose the downloaded ZIP file and upload
+7. The extension will now be available in your app
 
 ## Usage
 
-### Basic Setup
+1. Drag and drop the "Qlik Globe" extension onto your sheet
+2. Add a dimension that contains country names (must match standard country naming conventions)
+3. Optionally add a measure to color countries based on data values
+4. Use the property panel to customize the appearance and behavior
 
-1. Drag the Globe Country extension onto your sheet
-2. Add a dimension that contains country names
-   - The dimension must match the country names in the extension's internal map
-3. Optionally add a measure to color countries by value
+### Required Data Format
 
-### Configuration Options
+- The dimension should contain country names in standard English format (e.g., "United States", "Germany", "Japan")
+- For best results, ensure country names match the standard naming conventions in the extension
 
-#### Globe Settings
+## Configuration Options
 
-- **Color Mode**: Choose between static coloring or coloring by measure
-- **Force Varied Colors**: Enable this option when measure values are identical to create visual variety
-- **Variation Method**: Choose how to vary colors (by country name, random, or alphabetical)
-- **Country Color**: Set the default color for countries (used in static color mode)
-- **Measure Color Start/End**: Define the color gradient for measure-based coloring
-- **Selected Country Color**: Color for selected countries
-- **Country Hover Color**: Color when hovering over countries
-- **Ocean Color**: Background color for the globe
-- **Rotation Speed**: Control how fast the globe rotates (0 to disable rotation)
+### Globe Settings
 
-#### Animation Settings
+| Setting | Description | Default |
+|---------|-------------|---------|
+| Color Mode | Choose between static coloring or measure-based coloring | Static |
+| Country Color | Default color for countries when using static mode | #d4dadc |
+| Measure Color Start | Start color of the gradient for measure-based coloring | #e5f3ec |
+| Measure Color End | End color of the gradient for measure-based coloring | #008536 |
+| Selected Country Color | Color for selected countries | #006580 |
+| Country Hover Color | Color when hovering over a country | #b8bfc2 |
+| Ocean Color | Background color of the globe (oceans) | #ffffff |
+| Rotation Speed | Speed of automatic globe rotation | 20 |
 
-- **Enable Initial Animation**: Toggle the intro animation
-- **Animation Duration**: Set the duration of the intro animation
+### Animation Settings
 
-#### Zoom Settings
+| Setting | Description | Default |
+|---------|-------------|---------|
+| Enable Initial Animation | Enable/disable the initial zoom animation | Enabled |
+| Animation Duration | Duration of the initial animation in milliseconds | 2000 |
 
-- **Enable Zoom Controls**: Show/hide zoom controls
-- **Enable Touchpad/Pinch Zoom**: Enable zooming with touchpad or pinch gestures
-- **Zoom Controls Visibility**: Choose when zoom controls appear (always, on hover, never)
-- **Min/Max Zoom Scale**: Set zoom limits
-- **Initial Zoom Level**: Set the starting zoom level
-- **Zoom Speed Factor**: Control how fast zooming occurs
-- **Pinch Zoom Sensitivity**: Adjust sensitivity for touch devices
+### Zoom Settings
 
-#### Tooltip Settings
+| Setting | Description | Default |
+|---------|-------------|---------|
+| Enable Zoom Controls | Show/hide zoom control buttons | Enabled |
+| Enable Touchpad/Pinch Zoom | Enable zooming with touchpad or pinch gestures | Enabled |
+| Zoom Controls Visibility | Control when zoom buttons are visible (Always/On Hover/Never) | Always |
+| Minimum Zoom Scale | Minimum zoom level | 0.5 |
+| Maximum Zoom Scale | Maximum zoom level | 2.5 |
+| Initial Zoom Level | Starting zoom level | 1.25 |
+| Zoom Speed Factor | Speed factor for zoom controls | 1.2 |
+| Pinch Zoom Sensitivity | Sensitivity for pinch-to-zoom on touch devices | 1 |
 
-Extensive tooltip customization options:
-- Background color and opacity
-- Text styling (color, size, weight)
-- Measure value styling
-- Border options
-- Shadow effects
-- Padding and spacing
+### Tooltip Settings
 
-## Technical Details
+| Setting | Description | Default |
+|---------|-------------|---------|
+| Background Color | Tooltip background color | #F8F9FA |
+| Background Opacity | Transparency of tooltip background | 0.9 |
+| Font Color | Text color in tooltips | #006580 |
+| Font Size | Size of tooltip text | 12px |
+| Font Weight | Weight of tooltip text (Normal/Bold) | Normal |
+| Border Color | Color of tooltip border | #ffffff |
+| Border Size | Width of tooltip border in pixels | 1 |
+| Border Radius | Roundness of tooltip corners | 4px |
 
-### Requirements
+## Advanced Options
 
-- Qlik Sense February 2021 or later
-- Compatible with both Qlik Sense Enterprise and Desktop
+### Force Varied Coloring
 
-### Dependencies
+When all countries have the same measure value, this option creates artificial variations in coloring to make countries visually distinguishable. Useful for single-value visualizations.
 
+### Variation Methods
+
+When Force Varied Coloring is enabled:
+
+- **By Country Name**: Varies colors based on the country name
+- **Random**: Applies random variations to colors
+- **Alphabetical**: Varies colors based on alphabetical order
+
+## Browser Compatibility
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Dependencies
+
+This extension uses:
 - D3.js v7 for visualization
-- Globe coordinates data is included in the extension
+- Qlik Sense APIs for data handling and selections
 
-### Browser Compatibility
+## Limitations
 
-- Chrome, Firefox, Safari, Edge (latest versions)
-- Mobile browsers with touch support
-
-## Troubleshooting
-
-### Common Issues
-
-#### Countries Not Displaying Correctly
-
-Make sure your dimension values match the country names used in the extension. The extension uses standard English country names.
-
-#### Identical Measure Values
-
-If all countries show the same color when using measure coloring, enable the "Force Varied Colors" option to create visual differentiation.
-
-#### Performance Issues
-
-For large dashboards or slower devices:
-- Reduce the rotation speed
-- Disable the initial animation
-- Use static coloring instead of measure-based coloring
+- Works best with standard country names in English
+- Performance may vary with large datasets
+- Best viewed on larger screens, though responsive design works on mobile
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## Author
+
+[Your Name/Organization]
+
 ## Acknowledgments
 
-- World map data derived from Natural Earth
-- Built with D3.js
-- Inspired by other globe visualizations in the data visualization community
+- Qlik for their platform and APIs
+- D3.js team for their amazing visualization library
+- Contributors and testers who provided valuable feedback
+
+---
+
+## Support
+
+If you encounter any issues or have questions, please file an issue on the [GitHub issues page](https://github.com/yourusername/qlik-globe/issues).
+
+For commercial support or custom development, please contact [your email address].
+
+## FAQ
+
+### The globe is not showing some countries correctly
+
+Make sure your country names match standard naming conventions. Check the console for any errors related to country mapping.
+
+### How can I change the default view position?
+
+You can modify the `currentRotation` property in the code to change the default view when the visualization loads.
+
+### Can I use this with my own custom geography data?
+
+The extension currently uses standard world geography data. Custom geography would require modifications to the code.
+
+### Is this extension compatible with Qlik Sense Mobile?
+
+Yes, the extension is designed to be responsive and includes touch support for mobile devices.
