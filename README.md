@@ -1,6 +1,6 @@
 # Qlik Globe - Interactive Country Map Extension
 
-![Qlik Globe Extension](https://via.placeholder.com/800x400?text=Qlik+Globe+Extension)
+https://github.com/user-attachments/assets/1e6fc290-5a00-4864-977b-e0e57767292c
 
 ## Overview
 
@@ -18,10 +18,6 @@ Qlik Globe is an interactive 3D globe visualization extension for Qlik Sense tha
 - **Touch Support**: Full support for touch gestures including pinch-to-zoom
 - **Accessibility Features**: Keyboard navigation and ARIA attributes for better accessibility
 
-## Screenshots
-
-![Screenshot 1](https://via.placeholder.com/400x200?text=Screenshot+1)
-![Screenshot 2](https://via.placeholder.com/400x200?text=Screenshot+2)
 
 ## Installation
 
