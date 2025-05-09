@@ -2,7 +2,7 @@
     "name": "Globe Viz w/Country",
     "description": "Interactive 3D globe visualization with Country",
     "type": "visualization",
-    "version": "1.8.0",
+    "version": "1.0.0",
     "author": "MuchachoAI",
     "icon": "map",
     "preview": "",
